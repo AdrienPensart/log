@@ -63,11 +63,12 @@ namespace Log
 	{
 		public:
 
-			LogToConsole(const std::string& title="");
+			LogToConsole(const std::string& title="", bool buffering=true);
 			virtual void update(const Message& message);
 
 		private:
 
+			const bool buffering;
 			const std::string title;
 	};
 

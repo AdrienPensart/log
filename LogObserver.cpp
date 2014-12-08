@@ -85,8 +85,8 @@ namespace Log
 		}
 	}
 
-	LogToConsole::LogToConsole(const std::string& _title)
-	:title(_title)
+	LogToConsole::LogToConsole(const std::string& _title, bool _buffering)
+	:title(_title), buffering(_buffering)
 	{
 	}
 
@@ -100,6 +100,9 @@ namespace Log
 				  << ") : "
 				  << message.getContent()
 				  << '\n';
+		if(!buffering){
+			std::cout.flush();
+		}
 	}
 #ifdef WIN32
 	LogToSql::LogToSql(const std::string& connectionStringArg) :
