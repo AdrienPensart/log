@@ -4,15 +4,13 @@
 #include <common/Identity.hpp>
 #include <string>
 
-namespace Log
-{
-	class Message : public Common::Serializable
-	{
+namespace Log {
+	class Message : public Common::Serializable {
 		public:
-			
+
 			Message();
 			Message(const Common::Identity& identity, const std::string& content, const std::string& callStack, const std::string& line, const std::string& file);
-			
+
 			const Common::Identity& getIdentity() const;
 			Common::Identity& getIdentity();
 			const std::string& getContent() const ;

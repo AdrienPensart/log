@@ -5,16 +5,12 @@
 #include "Log.hpp"
 #include "Message.hpp"
 
-namespace Log
-{
-	std::string genCallStack(const CallStack& callStack)
-	{
+namespace Log {
+	std::string genCallStack(const CallStack& callStack) {
 		std::string graph;
-		for(unsigned int indexFunctions = 0; indexFunctions != callStack.size(); indexFunctions++)
-		{
+		for(unsigned int indexFunctions = 0; indexFunctions != callStack.size(); indexFunctions++) {
 			graph += callStack[indexFunctions];
-			if(indexFunctions + 1 != callStack.size())
-			{
+			if(indexFunctions + 1 != callStack.size()) {
 				graph += ":";
 			}
 		}
@@ -28,44 +24,36 @@ namespace Log
 
 	Lout::Lout() :
 		tracing(true),
-		warningMessage(true)
-	{
+		warningMessage(true) {
 	}
 
-	void Lout::setTracing(bool trace)
-	{
+	void Lout::setTracing(bool trace) {
 		tracing = trace;
 	}
 
-	void Lout::enterFunction(const std::string& func)
-	{
+	void Lout::enterFunction(const std::string& func) {
 		functions.push_back(func);
 	}
 
-	void Lout::leaveFunction()
-	{
+	void Lout::leaveFunction() {
 		functions.pop_back();
 	}
 
-	void Lout::setIdentity(const Common::Identity& identityArg)
-	{
+	void Lout::setIdentity(const Common::Identity& identityArg) {
 		identity = identityArg;
 	}
 
-	Lout& Lout::setMacro(const std::string& currentLineArg, const std::string& currentFileArg)
-	{
+	Lout& Lout::setMacro(const std::string& currentLineArg, const std::string& currentFileArg) {
 		currentLine = currentLineArg;
 		currentFile = currentFileArg;
 		return lout;
 	}
 
-	Lout& Lout::operator << (const std::string& object)
-	{
+	Lout& Lout::operator << (const std::string& object) {
 		std::string graph = genCallStack(functions);
 		Message message(identity, object, graph, currentLine, currentFile);
 		message.getIdentity().setIp(Network::HostInfo::getLocalIp());
-		if(!isObserved() && warningMessage)
-		{
+		if(!isObserved() && warningMessage) {
 			std::cout << "Warning : no output observer registered.\n";
 			warningMessage = false;
 		}
@@ -74,23 +62,19 @@ namespace Log
 	}
 
 	ScopedLog::ScopedLog(const std::string& log):
-	msg(log)
-	{
+		msg(log) {
 		LOG << msg + " (started).";
 	}
 
-	ScopedLog::~ScopedLog()
-	{
+	ScopedLog::~ScopedLog() {
 		LOG << msg + " (ended).";
 	}
 
-	FunctionLog::FunctionLog(const std::string& functionName)
-	{
+	FunctionLog::FunctionLog(const std::string& functionName) {
 		LOG.enterFunction(functionName);
 	}
 
-	FunctionLog::~FunctionLog()
-	{
+	FunctionLog::~FunctionLog() {
 		LOG.leaveFunction();
 	}
 } // Log

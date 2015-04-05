@@ -9,10 +9,8 @@
 #include "LogObserver.hpp"
 #include "Message.hpp"
 
-namespace Log
-{
-	class LogServer : public Common::Observable<LogObserver, Message>, public Common::NonCopyable
-	{
+namespace Log {
+	class LogServer : public Common::Observable<LogObserver, Message>, public Common::NonCopyable {
 		public:
 
 			LogServer(const Network::Port& port, Network::Timeout deadlineArg=Network::Timeout(1));

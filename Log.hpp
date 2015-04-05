@@ -12,14 +12,12 @@
 #include <vector>
 #include <map>
 
-namespace Log
-{
+namespace Log {
 	typedef std::vector<std::string> CallStack;
 
 	std::string genCallStack(const CallStack& callStack);
 
-	class Lout : public Common::Observable<LogObserver, Message>, public Common::NonCopyable
-	{
+	class Lout : public Common::Observable<LogObserver, Message>, public Common::NonCopyable {
 		public:
 
 			void setTracing(bool trace);
@@ -42,15 +40,13 @@ namespace Log
 			CallStack functions;
 	};
 
-	struct ScopedLog
-	{
+	struct ScopedLog {
 		ScopedLog(const std::string& log);
 		~ScopedLog();
 		const std::string& msg;
 	};
 
-	struct FunctionLog
-	{
+	struct FunctionLog {
 		FunctionLog(const std::string& functionName);
 		~FunctionLog();
 	};
@@ -58,21 +54,21 @@ namespace Log
 } // Log
 
 #ifdef INNOCENCE_DEBUG
-	#define LOG if(1) Log::Lout::lout.setMacro(QUOTE(__LINE__), __FILE__)
-	#define TRACE_FUNCTION Log::FunctionLog function_log((__FUNCTION__));
-	#define CATCH_COMMON_EXCEPTION \
+#define LOG if(1) Log::Lout::lout.setMacro(QUOTE(__LINE__), __FILE__)
+#define TRACE_FUNCTION Log::FunctionLog function_log((__FUNCTION__));
+#define CATCH_COMMON_EXCEPTION \
 	catch(Common::Exception& e){ \
 	LOG << e.what(); \
 	}
-	#define CATCH_UNKNOWN_EXCEPTION \
+#define CATCH_UNKNOWN_EXCEPTION \
 	catch(...){ \
 	LOG << "Unknown exception"; \
 	}
 #else
-	#define LOG if(0) Log::Lout::lout.setMacro(QUOTE(__LINE__), __FILE__)
-	#define TRACE_FUNCTION
-	#define CATCH_COMMON_EXCEPTION
-	#define CATCH_UNKNOWN_EXCEPTION catch(...){}
+#define LOG if(0) Log::Lout::lout.setMacro(QUOTE(__LINE__), __FILE__)
+#define TRACE_FUNCTION
+#define CATCH_COMMON_EXCEPTION
+#define CATCH_UNKNOWN_EXCEPTION catch(...){}
 #endif
 
 //#define SCOPED_LOG(x) Common::ScopedLog scoped_log((x));
